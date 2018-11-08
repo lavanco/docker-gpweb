@@ -26,13 +26,13 @@ RUN \
   yum $yum_options install $yum_packages
 
 RUN \
-  curl -L -o gpweb-$GPWEB_VERSION.zip https://softwarepublico.gov.br/social/articles/0005/3617/gpweb_8_5_19_25out18.zip
-RUN unzip gpweb-$GPWEB_VERSION.zip -d /var/www/html/gpweb
-RUN chown -R apache:apache /var/www/html/
+  curl -L -o gpweb-$GPWEB_VERSION.zip https://softwarepublico.gov.br/social/articles/0005/3617/gpweb_8_5_19_25out18.zip && \
+  unzip gpweb-$GPWEB_VERSION.zip -d /var/www/html/gpweb && \
+  chown -R apache:apache /var/www/html/
 
 RUN \
-  sed -i.orig 's#DocumentRoot "\/var\/www\/html\"#DocumentRoot "\/var\/www\/html\/gpweb\"#g' /etc/httpd/conf/httpd.conf
-#  sed -i.orig 's#;date.timezone =#date.timezone = America/Sao_Paulo#g' /etc/php.ini
+  sed -i.orig 's#DocumentRoot "\/var\/www\/html\"#DocumentRoot "\/var\/www\/html\/gpweb\"#g' /etc/httpd/conf/httpd.conf && \
+  sed -i.orig 's#;date.timezone =#date.timezone = America/Sao_Paulo#g' /opt/remi/php56/root/etc/php.ini
 
 RUN rm /etc/localtime && ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
 
