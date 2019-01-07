@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  glpi:
+    image: lavanco/gpweb
+#    build:
+#      context: .
+    container_name: gpweb
+    hostname: glpi
+    working_dir: /var/www/html/gpweb
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
