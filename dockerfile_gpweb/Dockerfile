@@ -35,10 +35,10 @@ RUN \
 
 RUN \
   sed -i.orig 's#DocumentRoot "\/var\/www\/html\"#DocumentRoot "\/var\/www\/html\/gpweb\"#g' /etc/httpd/conf/httpd.conf && \
+  sed -i.orig "s#<span style=\"font-size:6pt\">Vers#<span style=\"font-size:6pt\"><a href=\"https:\/\/github.com\/lavanco\/\" title=\"lavanco\" target=\"_blank\">2019 Dockerized by lavanco<\/a><br>Vers#g" /var/www/html/gpweb/codigo/login.php && \
   sed -i.orig 's#;date.timezone =#date.timezone = America/Sao_Paulo#g' /opt/remi/php56/root/etc/php.ini && \
+  echo -e '[program:httpd]\n;command=/usr/sbin/httpd -c "ErrorLog /dev/stdout" -DFOREGROUND\nredirect_stderr=true\ncommand=/usr/sbin/httpd -DFOREGROUND\nprocess_name = httpd' > /etc/supervisord.d/nginx.ini && \
   rm /etc/localtime && ln -s /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
-
-ADD etc/supervisord.d/httpd.ini /etc/supervisord.d/httpd.ini
 
 CMD ["/usr/bin/supervisord","-n","-c","/etc/supervisord.conf"]
 
