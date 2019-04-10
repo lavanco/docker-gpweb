@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  gpweb:
+    depends_on:
+      - "mariadb"
+    image: lavanco/gpweb:8.5.19
+    build:
+      context: ../dockerfile_gpweb/
+    container_name: gpweb
+    hostname: gpweb
+    working_dir: /var/www/html/gpweb
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    networks:
+      - prod
+      
+  mariadb:
+    image: mariadb:10.3.14
+    build:
+      context: .
+    container_name: mariadb
+    hostname: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    working_dir: /var/lib/mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    networks:
+      - prod
+
+volumes:
+  mysql-data:
+    external: true
+
+networks:
+  prod:
+    external:
+      name: prod

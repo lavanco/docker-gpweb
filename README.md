@@ -11,46 +11,34 @@ This image is based on CentOS operating system and contains the basic packages n
 
 - GPWEB: 8.5.19
 
-## Installation
+## Get Docker Images
 
-From Github:
-
-```
-git clone https://github.com/lavanco/docker-gpweb.git
-
-cd docker-gpweb
-
-docker build -t lavanco/docker-gpweb:8.5.19 .
-```
-
-From Docker Hub:
+From Docker Hub (this image is ready to use):
 
 ```
-docker pull lavanco/gpweb:8.5.19
+# docker pull lavanco/gpweb:8.5.19
+```
+
+From Github (it needs to build image first):
+
+```
+# git clone https://github.com/lavanco/docker-gpweb.git
+
+# cd docker-gpweb
+
+# docker build -t lavanco/gpweb:8.5.19 .
 ```
 
 ## Usage
 
-GPWEB container using docker-compose
-
-```
-git clone https://github.com/lavanco/docker-gpweb.git
-
-cd docker-gpweb
-
-docker network create -d bridge prod
-
-docker volume create mysql-data
-
-docker-compose up -d
-```
-
 GPWEB container using ` docker run `
 
 ```
-docker volume create mysql-data
+# docker network create -d bridge prod
 
-docker run \
+# docker volume create mysql-data
+
+# docker run \
        -d \
        --name mariadb -h mariadb \
        -e MYSQL_ROOT_PASSWORD=rootpassword \
@@ -60,13 +48,25 @@ docker run \
        --network prod \
        mariadb:10.3.14
 
-docker run \
+# docker run \
        -d \
        --name gpweb -h gpweb \
        -p 80:80 -p 443:443 \
        -v /etc/localtime:/etc/localtime:ro \
        --network prod \
        lavanco/gpweb:8.5.19
+```
+
+GPWEB container using docker-compose
+
+```
+# cd docker-gpweb
+
+# docker network create -d bridge prod
+
+# docker volume create mysql-data
+
+# docker-compose -f compose/docker-compose.yml -p gpweb-app up -d
 ```
 
 Access [http://localhost](http://localhost) and follow instructions to install GPWEB.
